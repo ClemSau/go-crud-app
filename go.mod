@@ -78,3 +78,19 @@ func UpdatePersonEndpoint(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 }
+
+
+// Router
+
+func main() {
+	router := mux.NewRouter()
+	people = append(people, Person{ID: "1", Firstname: "Bruce", Lastname: "Wayne", Contactinfo: Contactinfo{City: "Gotham", Zipcode: "735", Phone: "012345678"}})
+	people = append(people, Person{ID: "2", Firstname: "Clark", Lastname: "Kent", Contactinfo: Contactinfo{City: "Metropolis", Zipcode: "62960", Phone: "9876543210"}})
+	router.HandleFunc("/people", GetPeopleEndpoint).Methods("GET")
+	router.HandleFunc("/people/{id}", GetPersonEndpoint).Methods("GET")
+	router.HandleFunc("/people", CreatePersonEndpoint).Methods("POST")
+	router.HandleFunc("/people/{id}", DeletePersonEndpoint).Methods("DELETE")
+	router.HandleFunc("/people/{id}", UpdatePersonEndpoint).Methods("PUT")
+	fmt.Println("Starting server on port 8000...")
+	log.Fatal(http.ListenAndServe(":8000", router))
+}
